@@ -1,0 +1,6 @@
+# Project exclude paths
+/out/
+/AI_Connect4.iml
+/src/test/
+/src/main/resources/
+
