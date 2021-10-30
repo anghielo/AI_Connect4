@@ -1,3 +1,8 @@
+// Dany Flores, Umer Amin, Chanrady Ho, Dante Martinez, Thongsavik Sirivong
+// Kotlin Language
+// Capstone: Real-World Project Scenario
+// 16 November, 2021
+
 class Board internal constructor(time: Long) {
     private val ai_connect4: Array<IntArray>
     private val win_number = 4
