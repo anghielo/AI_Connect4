@@ -137,10 +137,11 @@ class Board internal constructor(time: Long) {
                 k++
             }
             sum += if (move_count > 1) {
-                if (empty_count >= 1 && move_count >= 3) 400 * empty_count * move_count else if (empty_count == 2 && move_count == 2) 150 * empty_count * move_count else 50 * empty_count * move_count
-            } else {
-                empty_count
+                if (empty_count >= 1 && move_count >= 3) 400 * empty_count * move_count
+                else if (empty_count == 2 && move_count == 2) 150 * empty_count * move_count
+                else 50 * empty_count * move_count
             }
+            else {empty_count}
             if (ai_connect4[i][j] == 2) {
                 sum = sum * -2
             }
@@ -149,7 +150,8 @@ class Board internal constructor(time: Long) {
         }
         return if (is_min == true) {
             eval_value
-        } else {
+        }
+        else {
             eval_value * -1
         }
     }
@@ -384,9 +386,9 @@ class Board internal constructor(time: Long) {
         if (first_move == 0 && is_computer_first == false) {
             print("\t\t Move List")
             first_move++
-        } else if (first_move != 0 && is_computer_first) print("\t\t Computer vs. Opponent") else if (first_move != 0 && is_computer_first == false) print(
-            "\t\t Opponent vs. Computer"
-        )
+        }
+        else if (first_move != 0 && is_computer_first) print("\t\t Computer vs. Opponent")
+        else if (first_move != 0 && is_computer_first == false) print("\t\t Opponent vs. Computer")
         var two = true
         var four = true
         var six = true
