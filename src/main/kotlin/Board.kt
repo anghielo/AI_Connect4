@@ -96,7 +96,9 @@ class Board internal constructor(time: Long) {
                 k++
             }
             sum += if (move_count > 1) {
-                if (empty_count >= 1 && move_count >= 3) 500 * empty_count * move_count else if (empty_count == 2 && move_count == 2) 150 * empty_count * move_count else 50 * empty_count * move_count
+                if (empty_count >= 1 && move_count >= 3) 500 * empty_count * move_count
+                else if (empty_count == 2 && move_count == 2) 150 * empty_count * move_count
+                    else 50 * empty_count * move_count
             } else {
                 empty_count
             }
@@ -139,7 +141,7 @@ class Board internal constructor(time: Long) {
             sum += if (move_count > 1) {
                 if (empty_count >= 1 && move_count >= 3) 400 * empty_count * move_count
                 else if (empty_count == 2 && move_count == 2) 150 * empty_count * move_count
-                else 50 * empty_count * move_count
+                    else 50 * empty_count * move_count
             }
             else {empty_count}
             if (ai_connect4[i][j] == 2) {
