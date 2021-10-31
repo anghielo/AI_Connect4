@@ -70,7 +70,7 @@ private fun gameLoop(b: Board) {
     while (true) {
         while (true) {
             print("Enter your move. (Ex: d5)\n==> ")
-            val move = keyboard_input.nextLine()
+            val move = keyboard_input.nextLine() // ====================Needs to be rewritten
             val split = move.split("".toRegex()).toTypedArray()
             var x = 1
             var y = 1
