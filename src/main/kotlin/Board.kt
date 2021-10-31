@@ -4,6 +4,12 @@
 // 16 November, 2021
 
 class Board internal constructor(time: Long) {
+    private val ANSI_BLUE = "\u001B[34m"
+    private val ANSI_GREEN = "\u001B[32m"
+    private val ANSI_YELLOW = "\u001B[33m"
+    private val ANSI_RESET = "\u001B[0m"
+    private val SIZE = 8
+    private val MAXDEPTH = 10
     private val ai_connect4: Array<IntArray>
     private val win_number = 4
     private val time: Long
@@ -619,15 +625,6 @@ class Board internal constructor(time: Long) {
             forty_eight = false
         }
         println()
-    }
-
-    companion object {
-        private const val ANSI_BLUE = "\u001B[34m"
-        private const val ANSI_GREEN = "\u001B[32m"
-        private const val ANSI_YELLOW = "\u001B[33m"
-        private const val ANSI_RESET = "\u001B[0m"
-        private const val SIZE = 8
-        private const val MAXDEPTH = 10
     }
 
     init {
