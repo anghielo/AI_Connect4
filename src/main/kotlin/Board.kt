@@ -8,7 +8,7 @@ class Board internal constructor(time: Long) {
     private val ANSI_GREEN = "\u001B[32m"
     private val ANSI_YELLOW = "\u001B[33m"
     private val ANSI_RESET = "\u001B[0m"
-    private val SIZE = 8
+    private val SIZE = 16
     private val MAXDEPTH = 10
     private val ai_connect4: Array<IntArray>
     private val win_number = 4
@@ -384,7 +384,7 @@ class Board internal constructor(time: Long) {
         val letterArray = letters.toCharArray()
         println()
         print(" ")
-        for (i in 1..8) print(ANSI_BLUE + " " + i + ANSI_RESET)
+        for (i in 1..SIZE) print(ANSI_BLUE + " " + i + ANSI_RESET)
         if (first_move == 0 && is_computer_first == false) {
             print("\t\t Move List")
             first_move++
