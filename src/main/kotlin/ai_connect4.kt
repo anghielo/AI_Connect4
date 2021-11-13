@@ -83,13 +83,12 @@ private fun gameLoop(b: Board) {
     while (true) {
         while (true) {
             print("Enter your move. (Ex: d5)\n==> ")
-            val move = keyboard_input.nextLine() // ====================Needs to be rewritten
-            val split = move.split("".toRegex()).toTypedArray()
+            val move: String = keyboard_input.nextLine()
             var x = 1
             var y = 1
             try {
-                x = charPosition(split[0]) //A-H
-                y = split[1].toInt() //1-8
+                x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
+                y = move[1] - '0'
             } catch (e: Exception) {
                 System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
                 System.exit(1)
@@ -102,14 +101,4 @@ private fun gameLoop(b: Board) {
         println("Calculating...")
         b.makeMove()
     }
-}
-
-// returns the position based on the character
-private fun charPosition(s: String): Int {
-    val str = "ABCDEFGH"
-    val c = str.split("".toRegex()).toTypedArray()
-    for (i in c.indices) {
-        if (s.toUpperCase() == c[i]) return i
-    }
-    return -1
 }
