@@ -30,20 +30,21 @@ the next move for the player using time = 5 as its constraint.
  */
 
 import java.util.*
+import kotlin.system.exitProcess
 
 var keyboard_input = Scanner(System.`in`)
 fun main(args: Array<String>) {
     println("*********************************************************")
     println("\t\t\tAI-\u001B[32mConnect\u001B[0m-\u001B[33m4\u001B[0m")
     println("*********************************************************")
-    val time_limit: Long = 5
+    val timeLimit: Long = 5
     var choice = -1
     while (true) {
         try {
             print("Select:\n\t1. Play AI-Connect-4\n\t2. Exit\n==> ")
 
             choice = Integer.valueOf(readLine())
-            if (choice > 0 && choice <= 2) break else println("Please try again. Enter number 1 or 2.\n")
+            if (choice in 1..2) break else println("Please try again. Enter number 1 or 2.\n")
         } catch (e: NumberFormatException) {
             println("Please try again. Only the numbers 1 or 2 are allowed.\n")
         }
@@ -52,27 +53,27 @@ fun main(args: Array<String>) {
         1 -> choice = -1
         2 -> {
             println("\nTHANKS FOR PLAYING!\n")
-            System.exit(0)
+            exitProcess(0)
         }
         else -> {
         }
     }
-    val b = Board(time_limit)
+    val b = Board(timeLimit)
     var firstPlayer: String? = null
-    val is_computer_first: Boolean
+    val isComputerFirst: Boolean
     while (true) {
         print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
         if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
-            is_computer_first = true
-            b.setFirst(is_computer_first)
+            isComputerFirst = true
+            b.setFirst(isComputerFirst)
             println("Calculating...")
             b.makeMove()
             gameLoop(b)
             break
         } else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
-            is_computer_first = false
-            b.setFirst(is_computer_first)
+            isComputerFirst = false
+            b.setFirst(isComputerFirst)
             gameLoop(b)
             break
         } else println("Please try again. Only 'X' or 'O' are allowed.")
@@ -80,7 +81,8 @@ fun main(args: Array<String>) {
 }
 
 private fun gameLoop(b: Board) {
-    while (true) {
+    var inGame: Boolean = true
+    while (inGame) {
         while (true) {
             print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
@@ -91,14 +93,16 @@ private fun gameLoop(b: Board) {
                 y = move[1] - '0'
             } catch (e: Exception) {
                 System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
-                System.exit(1)
+                exitProcess(1)
             }
             if (b.getAMove(x, y - 1)) {
-                b.gameOver(x, y - 1, 2)
+                b.isGameOver(x, y - 1, 2)
                 break
             }
         }
         println("Calculating...")
-        b.makeMove()
+        if (b.makeMove()) {
+            inGame = false
+        }
     }
 }

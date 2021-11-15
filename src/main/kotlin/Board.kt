@@ -1,5 +1,3 @@
-import kotlin.system.exitProcess
-
 // Dany Flores, Umer Amin, Chanrady Ho, Dante Martinez, Thongsavik Sirivong
 // Kotlin Language
 // Capstone: Real-World Project Scenario
@@ -161,7 +159,7 @@ class Board internal constructor(time: Long) {
         }
     }
 
-    fun makeMove() {
+    fun makeMove(): Boolean {
         var best = -200000
         val depth = _maxDepth
         var score: Int
@@ -195,7 +193,7 @@ class Board internal constructor(time: Long) {
         //System.out.println("\nThis is the history: " + history);
         printBoard()
         //System.out.println("\nTime taken: " + (System.currentTimeMillis() - startTime)/1000 + " secs\n");
-        gameOver(mi, mj, 1)
+        return isGameOver(mi, mj, 1)
     }
 
     private fun min(depth: Int, row: Int, col: Int, e_value: Int): Int {
@@ -359,19 +357,23 @@ class Board internal constructor(time: Long) {
         return count;
     }
 */
-    fun gameOver(i: Int, j: Int, player: Int) {
+    fun isGameOver(i: Int, j: Int, player: Int): Boolean {
         if (check4Winner(i, j, player) == 50000) {
             println("Computer wins!\n")
-            exitProcess(0)
+            //exitProcess(0)
+            return true
         }
         if (check4Winner(i, j, player) == -50000) {
             println("Human wins!\n")
-            exitProcess(0)
+            //exitProcess(0)
+            return true
         }
         if (check4Winner(i, j, player) == 1) {
             println("Draw!\n")
-            exitProcess(0)
+            //exitProcess(0)
+            return true
         }
+        return false
     }
 
     fun setFirst(is_computer_first: Boolean) {
