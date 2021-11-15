@@ -33,35 +33,41 @@ import java.util.*
 import kotlin.system.exitProcess
 
 var keyboard_input = Scanner(System.`in`)
-fun main(args: Array<String>) {
+fun main() {
     println("*********************************************************")
     println("\t\t\tAI-\u001B[32mConnect\u001B[0m-\u001B[33m4\u001B[0m")
     println("*********************************************************")
-    val timeLimit: Long = 5
-    var choice = -1
+    var choice: Int = -1
     while (true) {
         try {
-            print("Select:\n\t1. Play AI-Connect-4\n\t2. Exit\n==> ")
-
+            print("\n*** Main Menu ***\n\t1. Player vs AI\n\t2. Player 1 vs Player 2\n\t3. Exit\n==> ")
             choice = Integer.valueOf(readLine())
-            if (choice in 1..2) break else println("Please try again. Enter number 1 or 2.\n")
+            if (choice !in 1..3) {
+                println("Please try again. Enter number 1, 2 or 3.\n")
+                continue
+            }
         } catch (e: NumberFormatException) {
-            println("Please try again. Only the numbers 1 or 2 are allowed.\n")
+            println("Please try again. Only the numbers 1, 2 or 3 are allowed.\n")
+        }
+        when (choice) {
+            1 -> option1()
+            2 -> option2()
+            3 -> {
+                println("\nTHANKS FOR PLAYING!\n")
+                exitProcess(0)
+            }
         }
     }
-    when (choice) {
-        1 -> choice = -1
-        2 -> {
-            println("\nTHANKS FOR PLAYING!\n")
-            exitProcess(0)
-        }
-        else -> {
-        }
-    }
-    val b = Board(timeLimit)
-    var firstPlayer: String? = null
-    val isComputerFirst: Boolean
-    while (true) {
+}
+
+// Player vs. AI
+private fun option1() {
+    val timeLimit: Long = 5
+    var b = Board(timeLimit)
+    var firstPlayer: String?
+    var isComputerFirst: Boolean
+    var isInGame = true
+    while (isInGame) {
         print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
         if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
@@ -69,25 +75,37 @@ fun main(args: Array<String>) {
             b.setFirst(isComputerFirst)
             println("Calculating...")
             b.makeMove()
-            gameLoop(b)
-            break
-        } else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
+        }
+        else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
             isComputerFirst = false
             b.setFirst(isComputerFirst)
-            gameLoop(b)
-            break
-        } else println("Please try again. Only 'X' or 'O' are allowed.")
+        }
+        else {
+            println("Please try again. Only 'X' or 'O' are allowed.")
+            continue
+        }
+
+        gameLoop(b)
+
+        isInGame = postGameOption()
+        if (isInGame)
+            b = Board(timeLimit)
     }
 }
 
+// Player 1 vs. Player 2
+private fun option2() {
+    //TO-DO:
+}
+
+// In Game
 private fun gameLoop(b: Board) {
-    var inGame: Boolean = true
-    while (inGame) {
+    while (true) {
         while (true) {
             print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
-            var x = 1
-            var y = 1
+            var x: Int
+            var y: Int
             try {
                 x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
                 y = move[1] - '0'
@@ -102,7 +120,31 @@ private fun gameLoop(b: Board) {
         }
         println("Calculating...")
         if (b.makeMove()) {
-            inGame = false
+            break
         }
     }
+}
+
+// Post-Game Menu
+private fun postGameOption(): Boolean {
+    var choice: Int
+    while (true) {
+        try {
+            print("\n*** Post-Game Menu ***\n\t1. Play Again\n\t2. Return to Main Menu\n\t3. Exit\n==> ")
+
+            choice = Integer.valueOf(readLine())
+            if (choice in 1..3) break else println("Please try again. Enter number 1, 2 or 3.\n")
+        } catch (e: NumberFormatException) {
+            println("Please try again. Only the numbers 1, 2 or 3 are allowed.\n")
+        }
+    }
+    when (choice) {
+        1 -> return true
+        2 -> return false
+        3 -> {
+            println("\nTHANKS FOR PLAYING!\n")
+            exitProcess(0)
+        }
+    }
+    return false
 }
