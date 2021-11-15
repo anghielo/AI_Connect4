@@ -73,7 +73,7 @@ private fun option1() {
         if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
             isComputerFirst = true
             b.setFirst(isComputerFirst)
-            println("Calculating...")
+            println("AI Calculating...")
             b.makeMove()
         }
         else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
@@ -100,9 +100,13 @@ private fun option2() {
 
 // In Game
 private fun gameLoop(b: Board) {
+    var gameOver = false
     while (true) {
         while (true) {
-            print("Enter your move. (Ex: d5)\n==> ")
+            b.printBoard()
+            b.displayHistory()
+            println()
+            print("\nEnter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             var x: Int
             var y: Int
@@ -114,11 +118,17 @@ private fun gameLoop(b: Board) {
                 exitProcess(1)
             }
             if (b.getAMove(x, y - 1)) {
-                b.isGameOver(x, y - 1, 2)
+                b.printBoard()
+                b.displayHistory()
+                if(b.isGameOver(x, y - 1, 2)) {
+                    gameOver = true
+                    println("Human wins!\n")
+                    break
+                }
                 break
             }
         }
-        println("Calculating...")
+        if(!gameOver) println("\nAI Calculating...\n") else break
         if (b.makeMove()) {
             break
         }
