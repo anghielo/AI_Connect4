@@ -32,6 +32,8 @@ the next move for the player using time = 5 as its constraint.
 import java.util.*
 import kotlin.system.exitProcess
 
+var xOrO = ""
+
 var keyboard_input = Scanner(System.`in`)
 fun main() {
     println("*********************************************************")
@@ -65,19 +67,20 @@ private fun option1() {
     val timeLimit: Long = 5
     var b = Board(timeLimit)
     var firstPlayer: String?
-    var isComputerFirst: Boolean
+    var isComputerFirst: Int
     var isInGame = true
     while (isInGame) {
         print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
-        if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
-            isComputerFirst = true
+        xOrO = firstPlayer
+            if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
+            isComputerFirst = 1
             b.setFirst(isComputerFirst)
-            println("AI Calculating...")
+            println("\nAI Calculating...")
             b.makeMove()
         }
         else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
-            isComputerFirst = false
+            isComputerFirst = 2
             b.setFirst(isComputerFirst)
         }
         else {
@@ -103,10 +106,10 @@ private fun gameLoop(b: Board) {
     var gameOver = false
     while (true) {
         while (true) {
-            b.printBoard()
-            b.displayHistory()
-            println()
-            print("\nEnter your move. (Ex: d5)\n==> ")
+            displayGame(b)
+            if(xOrO == "x")
+                println()
+            print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             var x: Int
             var y: Int
@@ -118,11 +121,10 @@ private fun gameLoop(b: Board) {
                 exitProcess(1)
             }
             if (b.getAMove(x, y - 1)) {
-                b.printBoard()
-                b.displayHistory()
+                displayGame(b)
                 if(b.isGameOver(x, y - 1, 2)) {
                     gameOver = true
-                    println("Human wins!\n")
+                    println("Humanity survives!\n")
                     break
                 }
                 break
@@ -130,9 +132,17 @@ private fun gameLoop(b: Board) {
         }
         if(!gameOver) println("\nAI Calculating...\n") else break
         if (b.makeMove()) {
+            displayGame(b)
+            println("Computer wins!")
             break
         }
     }
+}
+
+fun displayGame(b :Board){
+    b.printBoard()
+    b.displayHistory()
+    println()
 }
 
 // Post-Game Menu

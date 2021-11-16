@@ -18,7 +18,7 @@ class Board internal constructor(time: Long) : MyBoard() {
     private var _alpha = 0
     private var _beta = 0
     private var _occupiedTiles = HashMap<Int, String>()
-    private var _isComputerFirst = false
+//    private var _isComputerFirst = false
 //    private var _firstMove = 0
     private var _history = ""
 
@@ -56,7 +56,7 @@ class Board internal constructor(time: Long) : MyBoard() {
     override fun getAMove(i: Int, j: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
-                _board[i][j] = 2
+                board[i][j] = 2
                 _occupiedTiles[i * _size + j] = "" + i + j
                 val c = (65 + i).toChar()
                 history = history + c + (j + 1)
@@ -92,26 +92,26 @@ class Board internal constructor(time: Long) : MyBoard() {
                 if (j - k < 0) left = false
                 if (j + k == _size) right = false
                 if (left) {
-                    if (_board[i][j - k] == _board[i][j]) {
+                    if (board[i][j - k] == board[i][j]) {
                         moveCount++
                         if (!exploredTiles.containsKey(i * _size + (j - k))) {
                             exploredTiles[i * _size + (j - k)] = "" + i + (j - k)
                         }
                     } else {
-                        if (_board[i][j - k] == 0) {
+                        if (board[i][j - k] == 0) {
                             emptyCount++
                         }
                         left = false
                     }
                 }
                 if (right) {
-                    if (_board[i][j + k] == _board[i][j]) {
+                    if (board[i][j + k] == board[i][j]) {
                         moveCount++
                         if (!exploredTiles.containsKey(i * _size + (j + k))) {
                             exploredTiles[i * _size + (j + k)] = "" + i + (j + k)
                         }
                     } else {
-                        if (_board[i][j + k] == 0) {
+                        if (board[i][j + k] == 0) {
                             emptyCount++
                         }
                         right = false
@@ -135,26 +135,26 @@ class Board internal constructor(time: Long) : MyBoard() {
                 if (i - k < 0) down = false
                 if (i + k == _size) up = false
                 if (down) {
-                    if (_board[i - k][j] == _board[i][j]) {
+                    if (board[i - k][j] == board[i][j]) {
                             moveCount++
                         if (!exploredTiles.containsKey((i - k) * _size + j)) {
                             exploredTiles[(i - k) * _size + j] = "" + (i - k) + j
                         }
                     } else {
-                        if (_board[i - k][j] == 0) {
+                        if (board[i - k][j] == 0) {
                             emptyCount++
                         }
                         down = false
                     }
                 }
                 if (up) {
-                    if (_board[i + k][j] == _board[i][j]) {
+                    if (board[i + k][j] == board[i][j]) {
                             moveCount++
                         if (!exploredTiles.containsKey((i + k) * _size + j)) {
                             exploredTiles[(i + k) * _size + j] = "" + (i + k) + j
                         }
                     } else {
-                        if (_board[i + k][j] == 0) {
+                        if (board[i + k][j] == 0) {
                             emptyCount++
                         }
                         up = false
@@ -168,7 +168,7 @@ class Board internal constructor(time: Long) : MyBoard() {
                     else 50 * emptyCount * moveCount
             }
             else {emptyCount}
-            if (_board[i][j] == 2) {
+            if (board[i][j] == 2) {
                 sum *= -2
             }
             evalValue += sum
@@ -191,11 +191,11 @@ class Board internal constructor(time: Long) : MyBoard() {
         startTimer()
         for (i in 0 until _size) {
             for (j in 0 until _size) {
-                if (_board[i][j] == 0) {
+                if (board[i][j] == 0) {
                     val evalValue = 0
                     _alpha = -200000
                     _beta = 200000
-                    _board[i][j] = 1 // make move on board
+                    board[i][j] = 1 // make move on board
                     _occupiedTiles[i * _size + j] = "" + i + j
                     score = min(depth - 1, i, j, evalValue)
                     if (score > best) {
@@ -203,12 +203,12 @@ class Board internal constructor(time: Long) : MyBoard() {
                         mj = j
                         best = score
                     }
-                    _board[i][j] = 0 // undo move
+                    board[i][j] = 0 // undo move
                     _occupiedTiles.remove(i * _size + j)
                 }
             }
         }
-        _board[mi][mj] = 1
+        board[mi][mj] = 1
         _occupiedTiles[mi * _size + mj] = "" + mi + mj
         val convert = 65 + mi
         val c = convert.toChar()
@@ -223,19 +223,18 @@ class Board internal constructor(time: Long) : MyBoard() {
     private fun min(depth: Int, row: Int, col: Int, e_value: Int): Int {
         var best = 200000
         var score: Int
-//        val temp = check4Winner(row, col, 1)
         val temp = check4Winner(row, col, 1)
         if (temp != 0) return temp
         if (System.currentTimeMillis() - _startTime > _time) return evaluate(true)
         if (depth == 0) return evaluate(true)
         for (i in 0 until _size) {
             for (j in 0 until _size) {
-                if (_board[i][j] == 0) {
-                    _board[i][j] = 2
+                if (board[i][j] == 0) {
+                    board[i][j] = 2
                     score = max(depth - 1, i, j, e_value)
                     _occupiedTiles[i * _size + j] = "" + i + j
                     if (score < best) best = score
-                    _board[i][j] = 0 // undo move
+                    board[i][j] = 0 // undo move
                     _occupiedTiles.remove(i * _size + j)
                     if (best <= _alpha) return best else {
                         if (best < _beta) _beta = best
@@ -255,12 +254,12 @@ class Board internal constructor(time: Long) : MyBoard() {
         if (depth == 0) return evaluate(false)
         for (i in 0 until _size) {
             for (j in 0 until _size) {
-                if (_board[i][j] == 0) {
-                    _board[i][j] = 1
+                if (board[i][j] == 0) {
+                    board[i][j] = 1
                     _occupiedTiles[i * _size + j] = "" + i + j
                     score = min(depth - 1, i, j, e_value)
                     if (score > best) best = score
-                    _board[i][j] = 0 // undo move
+                    board[i][j] = 0 // undo move
                     _occupiedTiles.remove(i * _size + j)
                     if (best >= _beta) return best else {
                         if (best > _alpha) _alpha = best
@@ -401,9 +400,9 @@ class Board internal constructor(time: Long) : MyBoard() {
 //        return false
 //    }
 
-    fun setFirst(is_computer_first: Boolean) {
-        this._isComputerFirst = is_computer_first
-    }
+//    fun setFirst(is_computer_first: Boolean) {
+//        this._isComputerFirst = is_computer_first
+//    }
 
     private fun startTimer() {
         _startTime = System.currentTimeMillis()
