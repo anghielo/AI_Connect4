@@ -2,7 +2,7 @@
 // Kotlin Language
 // Capstone: Real-World Project Scenario
 // 16 November, 2021
-//a
+
 /*  Things to add:
         1. Print board according to the size
         2. Player vs Player

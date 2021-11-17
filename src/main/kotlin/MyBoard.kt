@@ -1,4 +1,8 @@
-//a
+// Dany Flores, Umer Amin, Chanrady Ho, Dante Martinez, Thongsavik Sirivong
+// Kotlin Language
+// Capstone: Real-World Project Scenario
+// 16 November, 2021
+
 open class MyBoard () {
     private val _ansiBlue = "\u001B[34m"
     private val _ansiGreen = "\u001B[32m"
