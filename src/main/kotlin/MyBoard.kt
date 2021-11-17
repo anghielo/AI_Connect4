@@ -9,16 +9,10 @@ open class MyBoard () {
     private val _ansiYellow = "\u001B[33m"
     private val _ansiReset = "\u001B[0m"
     private val _size = 8                   // the size of the board
-//    private val MAXDEPTH = 10
     protected val board: Array<IntArray> = Array(_size) { IntArray(_size) }    // board: 2D integer array
     private val _winNumber = 4              // variable to check if there are the same 4 input next to each other
-//    private lateinit val time: Long
-    private var startTime: Long = 0
-    private var alpha = 0
-    private var beta = 0
     private val _occupiedTiles = HashMap<Int, String>()
     private var _isComputerFirst = 0
-//    private var first_move = 0
     protected var history = ""
 
     // initialize array of the board
@@ -37,7 +31,14 @@ open class MyBoard () {
         } else -1
     }
 
-    open fun getAMove(i: Int, j: Int): Boolean {
+    /*
+        Arguments:
+            i = row index on the board
+            j = column index on the board
+            moveType = integers of 1 or 2 corresponds to piece X or O
+                        If game mode is PvAI, by default moveType is 2.
+     */
+    open fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
                 board[i][j] = 2
@@ -59,8 +60,8 @@ open class MyBoard () {
 
     // Check if there's a winner or not
      fun check4Winner(row: Int, col: Int, player: Int): Int {
-        if (checkRow(row, col) == _winNumber || checkCol(row, col) == _winNumber || checkLeftDiag(row, col) == _winNumber || checkRightDiag(row, col) == _winNumber)
-            return if (player == 1) 50000 else -50000
+        if (checkRow(row, col) == _winNumber || checkCol(row, col) == _winNumber)// || checkLeftDiag(row, col) == _winNumber || checkRightDiag(row, col) == _winNumber)
+            return if (player == 1) Int.MAX_VALUE else Int.MIN_VALUE
         for (i in 0 until _size) {
             for (j in 0 until _size) {
                 if (board[i][j] == 0) return 0
@@ -154,11 +155,11 @@ open class MyBoard () {
     }
 
     fun isGameOver(i: Int, j: Int, player: Int): Boolean {
-        if (check4Winner(i, j, player) == 50000) {
+        if (check4Winner(i, j, player) == Int.MAX_VALUE) {
 //            println("Computer wins!")
             return true
         }
-        if (check4Winner(i, j, player) == -50000) {
+        if (check4Winner(i, j, player) == Int.MIN_VALUE) {
 //            println("Human wins!\n")
             return true
         }
@@ -181,7 +182,7 @@ open class MyBoard () {
         else if(_isComputerFirst == 2)
             println("Player's moves \t\t\tComputer's moves")
         else
-            println("Player 1's moves \t\t\tPlayer 2's moves")
+            println("Player 1's moves \t\tPlayer 2's moves")
         var j = 0
         for (i in history.indices step 2){
             if(j % 2 == 0)

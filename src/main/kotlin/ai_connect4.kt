@@ -65,19 +65,19 @@ private fun option1() {
     val timeLimit: Long = 5
     var b = Board(timeLimit)
     var firstPlayer: String?
-    var isComputerFirst: Boolean
+    var isComputerFirst: Int
     var isInGame = true
     while (isInGame) {
         print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
         if (firstPlayer == "X" || firstPlayer == "x") {
-            isComputerFirst = true
+            isComputerFirst = 1
             b.setFirst(isComputerFirst)
             println("AI Calculating...")
             b.makeMove()
         }
         else if (firstPlayer == "O" || firstPlayer == "o") {
-            isComputerFirst = false
+            isComputerFirst = 2
             b.setFirst(isComputerFirst)
         }
         else {
@@ -90,6 +90,50 @@ private fun option1() {
         isInGame = postGameOption()
         if (isInGame)
             b = Board(timeLimit)
+    }
+}
+
+// In PvAI Game
+private fun gameLoop(b: Board) {
+    var gameOver = false
+    loop@ while (true) {
+        while (true) {
+            displayGame(b)
+            print("\nEnter your move. (Ex: d5)\n==> ")
+            val move: String = keyboard_input.nextLine()
+            if (move == "quit")
+                break@loop
+            var x: Int
+            var y: Int
+            try {
+                x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
+                y = move[1] - '0'
+            } catch (e: Exception) {
+                System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
+                exitProcess(1)
+            }
+            if (b.getAMove(x, y - 1, 2)) {
+                displayGame(b)
+                if(b.isGameOver(x, y - 1, 2)) {
+                    gameOver = true
+                    println()
+                    println("******************")
+                    println("*   \u001B[32mHuman Wins\u001B[33m!\u001B[0m  *")
+                    println("******************")
+                    break
+                }
+                break
+            }
+        }
+        if(!gameOver) println("\nAI Calculating...\n") else break
+        if (b.makeMove()) {
+            displayGame(b)
+            println()
+            println("******************")
+            println("* \u001B[32mComputer Wins\u001B[33m!\u001B[0m *")
+            println("******************")
+            break
+        }
     }
 }
 
@@ -108,14 +152,12 @@ private fun option2() {
     }
 }
 
-//In pvp Game
+//In PvP Game
 private fun gameLoop2(b:Board) {
     var gameOver = false
     while (true) {
         while (true) {
-            b.printBoard()
-            b.displayHistory()
-            println()
+            displayGame(b)
             print("\nEnter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             var x: Int
@@ -127,12 +169,14 @@ private fun gameLoop2(b:Board) {
                 System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
                 exitProcess(1)
             }
-            if (b.getAMove(x, y - 1)) {
-                b.printBoard()
-                b.displayHistory()
+            if (b.getAMove(x, y - 1, 2)) {
+                displayGame(b)
                 if(b.isGameOver(x, y - 1, 2)) {
                     gameOver = true
-                    println("\nPlayer 1 wins!\n")
+                    println()
+                    println("******************")
+                    println("* \u001B[32mPlayer 1 Wins\u001B[33m!\u001B[0m *")
+                    println("******************")
                     break
                 }
                 break
@@ -154,55 +198,20 @@ private fun gameLoop2(b:Board) {
                 System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
                 exitProcess(1)
             }
-            if (b.getAMove2(x2, y2 - 1)) {
-                b.printBoard()
-                b.displayHistory()
+            if (b.getAMove(x2, y2 - 1, 1)) {
+                displayGame(b)
                 if(b.isGameOver(x2, y2 - 1, 2)) {
                     gameOver = true
-                    println("Player2 wins!\n")
+                    println()
+                    println("******************")
+                    println("* \u001B[32mPlayer 2 Wins\u001B[33m!\u001B[0m *")
+                    println("******************")
                     break
                 }
                 break
             }
         }
         if (gameOver){
-            break
-        }
-    }
-}
-
-// In Game
-private fun gameLoop(b: Board) {
-    var gameOver = false
-    while (true) {
-        while (true) {
-            b.printBoard()
-            b.displayHistory()
-            println()
-            print("\nEnter your move. (Ex: d5)\n==> ")
-            val move: String = keyboard_input.nextLine()
-            var x: Int
-            var y: Int
-            try {
-                x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
-                y = move[1] - '0'
-            } catch (e: Exception) {
-                System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
-                exitProcess(1)
-            }
-            if (b.getAMove(x, y - 1)) {
-                b.printBoard()
-                b.displayHistory()
-                if(b.isGameOver(x, y - 1, 2)) {
-                    gameOver = true
-                    println("Human wins!\n")
-                    break
-                }
-                break
-            }
-        }
-        if(!gameOver) println("\nAI Calculating...\n") else break
-        if (b.makeMove()) {
             break
         }
     }
@@ -230,4 +239,10 @@ private fun postGameOption(): Boolean {
         }
     }
     return false
+}
+
+fun displayGame(b :Board){
+    b.printBoard()
+    b.displayHistory()
+    println()
 }
