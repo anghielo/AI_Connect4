@@ -73,6 +73,26 @@ class Board internal constructor(time: Long) : MyBoard() {
         }
     }
 
+    fun getAMove2(i: Int, j: Int): Boolean {
+        return when (checkLegalMove(i, j)) {
+            0 -> {
+                _board[i][j] = 1
+                _occupiedTiles[i * _size + j] = "" + i + j
+                val c = (65 + i).toChar()
+                history = history + c + (j + 1)
+                true
+            }
+            1 -> {
+                println("Move already taken!")
+                false
+            }
+            else -> {
+                println("Invalid move!")
+                false
+            }
+        }
+    }
+
     private fun evaluate(is_min: Boolean): Int {
         val exploredTiles: HashMap<Int, String> = HashMap()
         var evalValue = 0
