@@ -104,13 +104,15 @@ private fun option2() {
 // In Game
 private fun gameLoop(b: Board) {
     var gameOver = false
-    while (true) {
+    loop@ while (true) {
         while (true) {
             displayGame(b)
             if(xOrO == "x")
                 println()
             print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
+            if (move == "quit")
+                break@loop
             var x: Int
             var y: Int
             try {
