@@ -2,7 +2,7 @@
 // Kotlin Language
 // Capstone: Real-World Project Scenario
 // 16 November, 2021
-
+//a
 class Board internal constructor(time: Long) : MyBoard() {
 //    private val _ansiBlue = "\u001B[34m"
 //    private val _ansiGreen = "\u001B[32m"

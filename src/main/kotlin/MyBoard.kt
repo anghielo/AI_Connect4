@@ -1,3 +1,4 @@
+//a
 open class MyBoard () {
     private val _ansiBlue = "\u001B[34m"
     private val _ansiGreen = "\u001B[32m"
