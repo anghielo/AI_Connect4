@@ -32,87 +32,67 @@ the next move for the player using time = 5 as its constraint.
 import java.util.*
 import kotlin.system.exitProcess
 
-var xOrO = ""
-
 var keyboard_input = Scanner(System.`in`)
-fun main() {
+fun main(args: Array<String>) {
     println("*********************************************************")
     println("\t\t\tAI-\u001B[32mConnect\u001B[0m-\u001B[33m4\u001B[0m")
     println("*********************************************************")
-    var choice: Int = -1
+    val timeLimit: Long = 5
+    var choice = -1
     while (true) {
         try {
-            print("\n*** Main Menu ***\n\t1. Player vs AI\n\t2. Player 1 vs Player 2\n\t3. Exit\n==> ")
+            print("Select:\n\t1. Play AI-Connect-4\n\t2. Exit\n==> ")
+
             choice = Integer.valueOf(readLine())
-            if (choice !in 1..3) {
-                println("Please try again. Enter number 1, 2 or 3.\n")
-                continue
-            }
+            if (choice in 1..2) break else println("Please try again. Enter number 1 or 2.\n")
         } catch (e: NumberFormatException) {
-            println("Please try again. Only the numbers 1, 2 or 3 are allowed.\n")
-        }
-        when (choice) {
-            1 -> option1()
-            2 -> option2()
-            3 -> {
-                println("\nTHANKS FOR PLAYING!\n")
-                exitProcess(0)
-            }
+            println("Please try again. Only the numbers 1 or 2 are allowed.\n")
         }
     }
-}
-
-// Player vs. AI
-private fun option1() {
-    val timeLimit: Long = 5
-    var b = Board(timeLimit)
-    var firstPlayer: String?
-    var isComputerFirst: Int
-    var isInGame = true
-    while (isInGame) {
-        print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
+    when (choice) {
+        1 -> choice = -1
+        2 -> {
+            println("\nTHANKS FOR PLAYING!\n")
+            exitProcess(0)
+        }
+        else -> {
+        }
+    }
+    val b = Board(timeLimit)
+    var firstPlayer: String? = null
+    val isComputerFirst: Int
+    while (true) {
+        print("\nWho will be the first player? ('x' means computer, 'o' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
-        xOrO = firstPlayer
-            if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
+        if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
             isComputerFirst = 1
             b.setFirst(isComputerFirst)
-            println("\nAI Calculating...")
+            println("Calculating...")
             b.makeMove()
-        }
-        else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
-            isComputerFirst = 2
+            gameLoop(b)
+            break
+        } else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
+            isComputerFirst = 0
             b.setFirst(isComputerFirst)
-        }
-        else {
-            println("Please try again. Only 'X' or 'O' are allowed.")
-            continue
-        }
-
-        gameLoop(b)
-
-        isInGame = postGameOption()
-        if (isInGame)
-            b = Board(timeLimit)
+            gameLoop(b)
+            break
+        } else println("Please try again. Only 'x' or 'o' are allowed.")
     }
 }
 
-// Player 1 vs. Player 2
-private fun option2() {
-    //TO-DO:
-}
-
-// In Game
 private fun gameLoop(b: Board) {
-    var gameOver = false
-    while (true) {
+    var inGame: Boolean = true
+    while (inGame) {
         while (true) {
-            displayGame(b)
-            if(xOrO == "x")
-                println()
             print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
-            var x: Int
-            var y: Int
+            if (move == "exit")
+            {
+                inGame = false;
+                break;
+            }
+            var x = 1
+            var y = 1
             try {
                 x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
                 y = move[1] - '0'
@@ -121,50 +101,14 @@ private fun gameLoop(b: Board) {
                 exitProcess(1)
             }
             if (b.getAMove(x, y - 1)) {
-                displayGame(b)
-                if(b.isGameOver(x, y - 1, 2)) {
-                    gameOver = true
-                    println("Humanity survives!\n")
-                    break
-                }
+                b.isGameOver(x, y - 1, 2)
                 break
             }
         }
-        if(!gameOver) println("\nAI Calculating...\n") else break
+        println("Calculating...")
         if (b.makeMove()) {
-            displayGame(b)
-            println("Computer wins!")
-            break
+            inGame = false
         }
-    }
-}
 
-fun displayGame(b :Board){
-    b.printBoard()
-    b.displayHistory()
-    println()
-}
-
-// Post-Game Menu
-private fun postGameOption(): Boolean {
-    var choice: Int
-    while (true) {
-        try {
-            print("\n*** Post-Game Menu ***\n\t1. Play Again\n\t2. Return to Main Menu\n\t3. Exit\n==> ")
-
-            choice = Integer.valueOf(readLine())
-            if (choice in 1..3) break else println("Please try again. Enter number 1, 2 or 3.\n")
-        } catch (e: NumberFormatException) {
-            println("Please try again. Only the numbers 1, 2 or 3 are allowed.\n")
-        }
     }
-    when (choice) {
-        1 -> return true
-        2 -> return false
-        3 -> {
-            println("\nTHANKS FOR PLAYING!\n")
-            exitProcess(0)
-        }
-    }
-    return false
 }
