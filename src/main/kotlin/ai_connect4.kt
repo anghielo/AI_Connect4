@@ -82,14 +82,14 @@ fun main(args: Array<String>) {
 
 private fun gameLoop(b: Board) {
     var inGame: Boolean = true
-    while (inGame) {
+    loop@ while (inGame) {
         while (true) {
             print("Enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             if (move == "exit")
             {
                 inGame = false
-                break
+                break@loop
             }
             var x = 1
             var y = 1
