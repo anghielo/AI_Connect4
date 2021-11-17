@@ -32,8 +32,6 @@ the next move for the player using time = 5 as its constraint.
 import java.util.*
 import kotlin.system.exitProcess
 
-var xOrO = ""
-
 var keyboard_input = Scanner(System.`in`)
 fun main() {
     println("*********************************************************")
@@ -67,20 +65,19 @@ private fun option1() {
     val timeLimit: Long = 5
     var b = Board(timeLimit)
     var firstPlayer: String?
-    var isComputerFirst: Int
+    var isComputerFirst: Boolean
     var isInGame = true
     while (isInGame) {
         print("\nWho will be the first player? ('X' means computer, 'O' means human)\n==> ")
         firstPlayer = keyboard_input.nextLine()
-        xOrO = firstPlayer
-            if (firstPlayer.lowercase(Locale.getDefault()) == "x") {
-            isComputerFirst = 1
+        if (firstPlayer == "X" || firstPlayer == "x") {
+            isComputerFirst = true
             b.setFirst(isComputerFirst)
-            println("\nAI Calculating...")
+            println("AI Calculating...")
             b.makeMove()
         }
-        else if (firstPlayer.lowercase(Locale.getDefault()) == "o") {
-            isComputerFirst = 2
+        else if (firstPlayer == "O" || firstPlayer == "o") {
+            isComputerFirst = false
             b.setFirst(isComputerFirst)
         }
         else {
@@ -98,21 +95,29 @@ private fun option1() {
 
 // Player 1 vs. Player 2
 private fun option2() {
-    //TO-DO:
+    val timeLimit: Long = 5
+    var b = Board(timeLimit)
+    var isInGame = true
+    while (isInGame) {
+
+        gameLoop2(b)
+
+        isInGame = postGameOption()
+        if (isInGame)
+            b = Board(timeLimit)
+    }
 }
 
-// In Game
-private fun gameLoop(b: Board) {
+//In pvp Game
+private fun gameLoop2(b:Board) {
     var gameOver = false
-    loop@ while (true) {
+    while (true) {
         while (true) {
-            displayGame(b)
-            if(xOrO == "x")
-                println()
-            print("Enter your move. (Ex: d5)\n==> ")
+            b.printBoard()
+            b.displayHistory()
+            println()
+            print("\nEnter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
-            if (move == "quit")
-                break@loop
             var x: Int
             var y: Int
             try {
@@ -123,10 +128,74 @@ private fun gameLoop(b: Board) {
                 exitProcess(1)
             }
             if (b.getAMove(x, y - 1)) {
-                displayGame(b)
+                b.printBoard()
+                b.displayHistory()
                 if(b.isGameOver(x, y - 1, 2)) {
                     gameOver = true
-                    println("Humanity survives!\n")
+                    println("\nPlayer 1 wins!\n")
+                    break
+                }
+                break
+            }
+        }
+        if (gameOver) {
+            break
+        }
+        while (true) {
+            println()
+            print("\nPlayer 2 enter your move. (Ex: d5)\n==> ")
+            val move2: String = keyboard_input.nextLine()
+            var x2: Int
+            var y2: Int
+            try {
+                x2 = if (move2[0] < 'a') (move2[0] - 'A') else (move2[0] - 'a')
+                y2 = move2[1] - '0'
+            } catch (e: Exception) {
+                System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
+                exitProcess(1)
+            }
+            if (b.getAMove2(x2, y2 - 1)) {
+                b.printBoard()
+                b.displayHistory()
+                if(b.isGameOver(x2, y2 - 1, 2)) {
+                    gameOver = true
+                    println("Player2 wins!\n")
+                    break
+                }
+                break
+            }
+        }
+        if (gameOver){
+            break
+        }
+    }
+}
+
+// In Game
+private fun gameLoop(b: Board) {
+    var gameOver = false
+    while (true) {
+        while (true) {
+            b.printBoard()
+            b.displayHistory()
+            println()
+            print("\nEnter your move. (Ex: d5)\n==> ")
+            val move: String = keyboard_input.nextLine()
+            var x: Int
+            var y: Int
+            try {
+                x = if (move[0] < 'a') (move[0] - 'A') else (move[0] - 'a')
+                y = move[1] - '0'
+            } catch (e: Exception) {
+                System.err.println("Please run application again. Format: letter must be between A-H and number between 1-8 (Ex: d5)")
+                exitProcess(1)
+            }
+            if (b.getAMove(x, y - 1)) {
+                b.printBoard()
+                b.displayHistory()
+                if(b.isGameOver(x, y - 1, 2)) {
+                    gameOver = true
+                    println("Human wins!\n")
                     break
                 }
                 break
@@ -134,17 +203,9 @@ private fun gameLoop(b: Board) {
         }
         if(!gameOver) println("\nAI Calculating...\n") else break
         if (b.makeMove()) {
-            displayGame(b)
-            println("Computer wins!")
             break
         }
     }
-}
-
-fun displayGame(b :Board){
-    b.printBoard()
-    b.displayHistory()
-    println()
 }
 
 // Post-Game Menu
