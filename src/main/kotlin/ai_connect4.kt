@@ -88,8 +88,8 @@ private fun gameLoop(b: Board) {
             val move: String = keyboard_input.nextLine()
             if (move == "exit")
             {
-                inGame = false;
-                break;
+                inGame = false
+                break
             }
             var x = 1
             var y = 1
