@@ -6,14 +6,16 @@
 open class MyBoard () {
     // Colors for the texts
     private val _ansiBlue = "\u001B[34m"
-    private val _ansiGreen = "\u001B[32m"
     private val _ansiYellow = "\u001B[33m"
     private val _ansiReset = "\u001B[0m"
+    //private val _ansiGreen = "\u001B[32m"
+
     private val _size = 8                   // the size of the board
-    protected val board: Array<IntArray> = Array(_size) { IntArray(_size) }    // board: 2D integer array
     private val _winNumber = 4              // variable to check if there are the same 4 input next to each other
-    private val _occupiedTiles = HashMap<Int, String>()
     private var _isComputerFirst = 0    // to check if the AI makes the first move
+
+    protected val board: Array<IntArray> = Array(_size) { IntArray(_size) }    // board: 2D integer array
+    protected val occupiedTiles = HashMap<Int, String>() //private val _occupiedTiles = HashMap<Int, String>()
     protected var history = ""          // stores history of the game
 
     // initialize array of the board
@@ -33,18 +35,18 @@ open class MyBoard () {
     }
 
     /*
+    Make a move on board for player
         Arguments:
-            i = row index on the board
-            j = column index on the board
-            moveType = integers of 1 or 2 corresponds to piece X or O
+        * i = row index on the board
+        * j = column index on the board
+        * moveType = integers of 1 or 2 corresponds to piece X or O
                         If game mode is PvAI, by default moveType is 2.
      */
-    // Make a move on board for player
     fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
                 board[i][j] = moveType
-                _occupiedTiles[i * _size + j] = "" + i + j
+                occupiedTiles[i * _size + j] = "" + i + j
                 val c = (65 + i).toChar()
                 history = history + c + (j + 1)
                 true
@@ -61,15 +63,15 @@ open class MyBoard () {
     }
 
     // Check if there's a winner or not
-     fun check4Winner(row: Int, col: Int, player: Int): Int {
-        if (checkRow(row, col) == _winNumber || checkCol(row, col) == _winNumber)// || checkLeftDiag(row, col) == _winNumber || checkRightDiag(row, col) == _winNumber)
-            return if (player == 1) Int.MAX_VALUE else Int.MIN_VALUE
-        for (i in 0 until _size) {
-            for (j in 0 until _size) {
-                if (board[i][j] == 0) return 0
-            }
+    fun check4Winner(row: Int, col: Int, player: Int): Int {
+        return if (checkRow(row, col) == _winNumber ||
+            checkCol(row, col) == _winNumber ||
+            checkLeftDiag(row, col) == _winNumber ||
+            checkRightDiag(row, col) == _winNumber) {
+            if (player == 1) Int.MAX_VALUE else Int.MIN_VALUE
         }
-        return -1
+        else if (occupiedTiles.size == _size * _size) 1
+        else 0
     }
 
     // Row checking
@@ -82,16 +84,10 @@ open class MyBoard () {
             if (j - k < 0) left = false
             if (j + k == _size) right = false
             if (left) {
-                if (board[i][j - k] == board[i][j])
-                    count++
-                else
-                    left = false
+                if (board[i][j - k] == board[i][j]) count++ else left = false
             }
             if (right) {
-                if (board[i][j + k] == board[i][j])
-                    count++
-                else
-                    right = false
+                if (board[i][j + k] == board[i][j]) count++ else right = false
             }
             k++
         }
@@ -169,7 +165,7 @@ open class MyBoard () {
             return true
         }
         if (check4Winner(i, j, player) == 1) {
-//            println("Draw!")
+            println("Draw!")
             return true
         }
         return false
