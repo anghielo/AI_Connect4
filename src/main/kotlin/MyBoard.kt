@@ -4,6 +4,7 @@
 // 16 November, 2021
 
 open class MyBoard () {
+    // Colors for the texts
     private val _ansiBlue = "\u001B[34m"
     private val _ansiGreen = "\u001B[32m"
     private val _ansiYellow = "\u001B[33m"
@@ -12,8 +13,8 @@ open class MyBoard () {
     protected val board: Array<IntArray> = Array(_size) { IntArray(_size) }    // board: 2D integer array
     private val _winNumber = 4              // variable to check if there are the same 4 input next to each other
     private val _occupiedTiles = HashMap<Int, String>()
-    private var _isComputerFirst = 0
-    protected var history = ""
+    private var _isComputerFirst = 0    // to check if the AI makes the first move
+    protected var history = ""          // stores history of the game
 
     // initialize array of the board
     init{
@@ -38,6 +39,7 @@ open class MyBoard () {
             moveType = integers of 1 or 2 corresponds to piece X or O
                         If game mode is PvAI, by default moveType is 2.
      */
+    // Make a move on board for player
     fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
@@ -116,6 +118,7 @@ open class MyBoard () {
         return count
     }
 
+    // Check left diagonal
     private fun checkLeftDiag(i: Int, j: Int): Int {
         var count = 1
         var left = true
@@ -135,6 +138,7 @@ open class MyBoard () {
         return count
     }
 
+    // Check right diagonal
     private fun checkRightDiag(i: Int, j: Int): Int {
         var count = 1
         var left = true
@@ -154,6 +158,7 @@ open class MyBoard () {
         return count
     }
 
+    // Check if the game is over or not
     fun isGameOver(i: Int, j: Int, player: Int): Boolean {
         if (check4Winner(i, j, player) == Int.MAX_VALUE) {
 //            println("Computer wins!")
@@ -195,6 +200,7 @@ open class MyBoard () {
         }
     }
 
+    // Display the game board
     fun printBoard() {
         print(" ")
         for (i in 1.._size)  // print number of column
