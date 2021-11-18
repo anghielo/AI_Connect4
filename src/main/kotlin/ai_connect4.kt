@@ -89,6 +89,10 @@ private fun gameLoop(b: Board) {
             print("\nEnter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             if (move == "quit") break@loop
+            if(move.length != 2 || (move[0].code !in 65..75 && move[0].code !in 97..104) || move[1].code !in 48..57){
+                println("Invalid input. Letter must be between A-H and number between 1-8 (Ex: d5)")
+                continue
+            }
             var x: Int
             var y: Int
             try {
@@ -147,6 +151,10 @@ private fun gameLoop2(b:Board) {
             print("\nPlayer 1 (O) enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
             if (move == "quit") break@loop
+            else if(move.length != 2 || (move[0].code !in 65..75 && move[0].code !in 97..104) || move[1].code !in 48..57){
+                println("Invalid input. Letter must be between A-H and number between 1-8 (Ex: d5)")
+                continue
+            }
             var x: Int
             var y: Int
             try {
@@ -177,6 +185,10 @@ private fun gameLoop2(b:Board) {
             print("\nPlayer 2 (X) enter your move. (Ex: d5)\n==> ")
             val move2: String = keyboard_input.nextLine()
             if (move2 == "quit") break@loop
+            else if(move2.length != 2 || (move2[0].code !in 65..75 && move2[0].code !in 97..104) || move2[1].code !in 48..57){
+                println("Invalid input. Letter must be between A-H and number between 1-8 (Ex: d5)")
+                continue
+            }
             var x2: Int
             var y2: Int
             try {
