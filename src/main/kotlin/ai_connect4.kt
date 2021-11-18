@@ -3,19 +3,6 @@
 // Capstone: Real-World Project Scenario
 // 16 November, 2021
 
-/*  Things to add:
-        1. Print board according to the size
-        2. Player vs Player
-        3. Update the board instead of adding it to command prompt
-        4. GUI (optional)
-    Things to fix:
-        AI algorithm:
-            First AI move should be random
-            Diagonal check
-        Input verification
-        History on the bottom instead
- */
-
 /*
 Connect-4 is an 8x8 board where players take turns placing a piece on any
 grid to get either 4 in a row or 4 in a column. Time t is designated as 5 seconds
@@ -245,6 +232,5 @@ private fun postGameOption(): Boolean {
 fun displayGame(b :Board){
     b.printBoard()
     b.displayHistory()
-    b.printOT()
     println()
 }

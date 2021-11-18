@@ -12,53 +12,6 @@ class Board constructor(time: Long) : MyBoard() {
     private var _beta = 0
     private var _occupiedTiles = HashMap<Int, String>()
 
-    /*
-    override fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
-        return when (checkLegalMove(i, j)) {
-            0 -> {
-                board[i][j] = moveType
-                _occupiedTiles[i * _size + j] = "" + i + j
-                val c = (65 + i).toChar()
-                history = history + c + (j + 1)
-                true
-            }
-            1 -> {
-                println("Move already taken!")
-                false
-            }
-            else -> {
-                println("Invalid move!")
-                false
-            }
-        }
-    }
-    */
-    /*
-    fun getAMove2(i: Int, j: Int): Boolean {
-        return when (checkLegalMove(i, j)) {
-            0 -> {
-                board[i][j] = 1
-                _occupiedTiles[i * _size + j] = "" + i + j
-                val c = (65 + i).toChar()
-                history = history + c + (j + 1)
-                true
-            }
-            1 -> {
-                println("Move already taken!")
-                false
-            }
-            else -> {
-                println("Invalid move!")
-                false
-            }
-        }
-    }
-    */
-
-    fun printOT() {
-        println(_occupiedTiles)
-    }
-
     private fun evaluate(is_min: Boolean): Int {
         val exploredTiles: HashMap<Int, String> = HashMap()
         var evalValue = 0
