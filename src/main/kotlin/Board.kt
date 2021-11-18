@@ -3,7 +3,7 @@
 // Capstone: Real-World Project Scenario
 // 16 November, 2021
 
-class Board internal constructor(time: Long) : MyBoard() {
+class Board constructor(time: Long) : MyBoard() {
     private val _size = 8
     private val _maxDepth = 10
     private val _time: Long
@@ -12,6 +12,7 @@ class Board internal constructor(time: Long) : MyBoard() {
     private var _beta = 0
     private var _occupiedTiles = HashMap<Int, String>()
 
+    /*
     override fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
@@ -31,7 +32,7 @@ class Board internal constructor(time: Long) : MyBoard() {
             }
         }
     }
-
+    */
     /*
     fun getAMove2(i: Int, j: Int): Boolean {
         return when (checkLegalMove(i, j)) {
@@ -53,6 +54,10 @@ class Board internal constructor(time: Long) : MyBoard() {
         }
     }
     */
+
+    fun printOT() {
+        println(_occupiedTiles)
+    }
 
     private fun evaluate(is_min: Boolean): Int {
         val exploredTiles: HashMap<Int, String> = HashMap()
@@ -100,13 +105,25 @@ class Board internal constructor(time: Long) : MyBoard() {
                 }
                 k++
             }
+
+            sum += if (emptyCount > 0) {
+                when (moveCount) {
+                    4 -> 1000000
+                    3 -> if (emptyCount == 2) 100000 else 50000
+                    2 -> if (emptyCount == 2) 30000 else 5000
+                    1 -> if (emptyCount == 2) 100 else 10
+                    else -> 0
+                }
+            }
+            else 0
+
+            /*
             sum += if (moveCount > 1) {
                 if (emptyCount >= 1 && moveCount >= 3) 10000 * emptyCount * moveCount
                 else if (emptyCount == 2 && moveCount == 2) 5000 * emptyCount * moveCount
                     else 500 * emptyCount * moveCount
-            } else {
-                emptyCount
-            }
+            } else emptyCount
+            */
             var up = true
             var down = true
             k = 1
@@ -143,15 +160,27 @@ class Board internal constructor(time: Long) : MyBoard() {
                 }
                 k++
             }
+
+            sum += if (emptyCount > 0) {
+                when (moveCount) {
+                    4 -> 1000000
+                    3 -> if (emptyCount == 2) 100000 else 50000
+                    2 -> if (emptyCount == 2) 30000 else 5000
+                    1 -> if (emptyCount == 2) 100 else 10
+                    else -> 0
+                }
+            }
+            else 0
+
+            /*
             sum += if (moveCount > 1) {
                 if (emptyCount >= 1 && moveCount >= 3) 10000 * emptyCount * moveCount
                 else if (emptyCount == 2 && moveCount == 2) 5000 * emptyCount * moveCount
                 else 500 * emptyCount * moveCount
             }
             else emptyCount
-            if (board[i][j] == 2) {
-                sum *= -2
-            }
+            */
+            if (board[i][j] == 2) sum *= -2
             evalValue += sum
             exploredTiles[i * _size + j] = "" + i + j
         }

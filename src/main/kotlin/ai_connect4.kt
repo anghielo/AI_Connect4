@@ -101,8 +101,7 @@ private fun gameLoop(b: Board) {
             displayGame(b)
             print("\nEnter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
-            if (move == "quit")
-                break@loop
+            if (move == "quit") break@loop
             var x: Int
             var y: Int
             try {
@@ -155,11 +154,12 @@ private fun option2() {
 //In PvP Game
 private fun gameLoop2(b:Board) {
     var gameOver = false
-    while (true) {
+    loop@ while (true) {
         while (true) {
             displayGame(b)
-            print("\nEnter your move. (Ex: d5)\n==> ")
+            print("\nPlayer 1 (O) enter your move. (Ex: d5)\n==> ")
             val move: String = keyboard_input.nextLine()
+            if (move == "quit") break@loop
             var x: Int
             var y: Int
             try {
@@ -187,8 +187,9 @@ private fun gameLoop2(b:Board) {
         }
         while (true) {
             println()
-            print("\nPlayer 2 enter your move. (Ex: d5)\n==> ")
+            print("\nPlayer 2 (X) enter your move. (Ex: d5)\n==> ")
             val move2: String = keyboard_input.nextLine()
+            if (move2 == "quit") break@loop
             var x2: Int
             var y2: Int
             try {
@@ -244,5 +245,6 @@ private fun postGameOption(): Boolean {
 fun displayGame(b :Board){
     b.printBoard()
     b.displayHistory()
+    b.printOT()
     println()
 }

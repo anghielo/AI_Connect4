@@ -38,10 +38,10 @@ open class MyBoard () {
             moveType = integers of 1 or 2 corresponds to piece X or O
                         If game mode is PvAI, by default moveType is 2.
      */
-    open fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
+    fun getAMove(i: Int, j: Int, moveType: Int): Boolean {
         return when (checkLegalMove(i, j)) {
             0 -> {
-                board[i][j] = 2
+                board[i][j] = moveType
                 _occupiedTiles[i * _size + j] = "" + i + j
                 val c = (65 + i).toChar()
                 history = history + c + (j + 1)
@@ -182,7 +182,7 @@ open class MyBoard () {
         else if(_isComputerFirst == 2)
             println("Player's moves \t\t\tComputer's moves")
         else
-            println("Player 1's moves \t\tPlayer 2's moves")
+            println("Player 1 (O) moves \t\tPlayer 2 (X) moves")
         var j = 0
         for (i in history.indices step 2){
             if(j % 2 == 0)
