@@ -1,7 +1,7 @@
 # AI Connect 4 
 
 #### Group Members:  
-> Dany Flores
+> Dany Flores  
 > Umer Amin 
 
 > Chanrady Ho 
