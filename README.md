@@ -1,11 +1,11 @@
 # AI Connect 4 
 
 #### Group Members:  
->Dany Flores
->Umer Amin 
->Chanrady Ho 
->Dante Martinez 
->Thongsavik Sirivong
+> Dany Flores
+> Umer Amin 
+> Chanrady Ho 
+> Dante Martinez 
+> Thongsavik Sirivong
 
 
 # Gameplay  
