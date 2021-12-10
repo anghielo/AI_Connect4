@@ -1,4 +1,4 @@
-# AI Connect 4 
+# CS 4080: AI Connect 4 
 
 #### Group Members:  
 > Dany Flores  
@@ -9,11 +9,11 @@
 
 
 # Gameplay  
-> A more adavnced version of Tic-Tac-Toe
-> Instead of 3 same moves from a player, it requires 4.
-> Moreover, the board is bigger as well.
-> From this project, we're mainly focusing the AI using Alpha Beta Pruning.
+> A more adavnced version of Tic-Tac-Toe.    
+> Instead of 3 same moves from a player, it requires 4.  
+> Moreover, the board is bigger as well.  
+> From this project, we're mainly focusing the AI using Alpha Beta Pruning.  
 
 # Rule  
-> Connect 4 moves to win the game.
-> Block opponent's moves to prevent them from winning.
+> Connect 4 moves to win the game.  
+> Block opponent's moves to prevent them from winning.  
