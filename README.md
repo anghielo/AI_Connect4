@@ -15,5 +15,5 @@
 > From this project, we're mainly focusing the AI using Alpha Beta Pruning.  
 
 # Rule  
-> Connect 4 moves to win the game.  
+> Connect 4 moves to win the game (in row, column, or diagonal).  
 > Block opponent's moves to prevent them from winning.  
