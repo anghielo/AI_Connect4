@@ -2,12 +2,9 @@
 
 #### Group Members:  
 > Dany Flores  
-> Umer Amin 
-
-> Chanrady Ho 
-
-> Dante Martinez 
-
+> Umer Amin   
+> Chanrady Ho   
+> Dante Martinez   
 > Thongsavik Sirivong
 
 
